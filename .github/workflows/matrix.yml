@@ -1,0 +1,31 @@
+name: matrix build demo
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [14, 16, 18]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: matrix-dc83a27
+        run: echo "Building variant ${{ matrix.node-version }}"
+
+      - name: Generate artifact file
+        run: |
+          echo "Build output for Node ${{ matrix.node-version }}" > build-${{ matrix.node-version }}.txt
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-dc83a27-node${{ matrix.node-version }}
+          path: build-${{ matrix.node-version }}.txt
